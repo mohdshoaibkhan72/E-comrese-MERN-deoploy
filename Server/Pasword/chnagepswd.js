@@ -1,5 +1,3 @@
-const bcrypt = require("bcryptjs");
-
 const Chngepswd = async (req, res) => {
   try {
     const user = req.user;
@@ -11,13 +9,10 @@ const Chngepswd = async (req, res) => {
       return res.status(400).json({ message: "Please provide a new password" });
     }
 
-    // Hash the new password before updating
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-
     // Update the user's password in the database
     const updatedUser = await usermodel.findOneAndUpdate(
       { email: user.email },
-      { $set: { password: hashedPassword } }, // Update with hashed password
+      { $set: { password: newPassword } }, // Update with plain text password
       { new: true }
     );
 

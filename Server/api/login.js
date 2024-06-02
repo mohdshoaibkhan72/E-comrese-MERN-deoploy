@@ -1,6 +1,3 @@
-// Importing bcrypt
-const bcrypt = require("bcryptjs");
-
 // Async function for login
 const login = async (req, res) => {
   try {
@@ -20,9 +17,8 @@ const login = async (req, res) => {
       return res.status(401).json({ message: "User not found" });
     }
 
-    // Matching password
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
+    // Check password
+    if (password !== user.password) {
       return res.status(401).json({ message: "Incorrect password" });
     }
 

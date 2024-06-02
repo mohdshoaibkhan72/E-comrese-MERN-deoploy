@@ -1,5 +1,4 @@
 const User = require("../Models/UserModel");
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const registerUser = async (req, res) => {
@@ -29,15 +28,11 @@ const registerUser = async (req, res) => {
         .json({ success: false, message: "Email already exists" });
     }
 
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
     // Store new user data
     const user = new User({
       fullName,
       username,
-      password: hashedPassword,
+      password, // Assuming password is already hashed
       email,
       mobileNumber,
       accountType,
