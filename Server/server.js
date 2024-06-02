@@ -1,5 +1,5 @@
 const express = require("express");
-const connectDB = require("./conf/DbConnection.js");
+const connectDB = require("./conf/DbConnection");
 const app = express();
 const cors = require("cors");
 const registerUser = require("./api/Registration.js");
@@ -48,8 +48,14 @@ app.post("/shopingcard", checkAuthMiddle, Addcard);
 app.get("/getcard", GetCartItems);
 app.delete("/deleteCard", checkAuthMiddle, DelCartItems);
 
-//Order
+// Order
 app.post("/addorder", AddOrder);
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error("Unhandled error:", err.message);
+  res.status(500).json({ error: "Internal Server Error" });
+});
 
 // Start the server on port 8000
 app.listen(8000, () => {
