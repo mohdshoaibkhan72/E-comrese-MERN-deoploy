@@ -1,19 +1,13 @@
-// registerController.js
-const express = require("express");
-const app = express();
-const cors = require("cors");
 const User = require("../Models/UserModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
-app.use(cors());
 
 const registerUser = async (req, res) => {
   try {
     const { fullName, username, password, email, mobileNumber, accountType } =
       req.body;
 
-    //validation
+    // Validation
     if (
       !fullName ||
       !username ||
@@ -22,26 +16,24 @@ const registerUser = async (req, res) => {
       !mobileNumber ||
       !accountType
     ) {
-      return res.status(500).send({
-        success: false,
-        message: "pleas provide all filed",
-      });
+      return res
+        .status(500)
+        .json({ success: false, message: "Please provide all fields" });
     }
 
-    //chek user
+    // Check if user already exists
     const existing = await User.findOne({ email });
     if (existing) {
-      return res.status(500).send({
-        success: false,
-        message: "Email is alredy existing",
-      });
+      return res
+        .status(500)
+        .json({ success: false, message: "Email already exists" });
     }
-    //hasing pawsod
 
-    const salt = bcrypt.genSaltSync(1);
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    //storing the new data
+    // Store new user data
     const user = new User({
       fullName,
       username,
@@ -51,14 +43,13 @@ const registerUser = async (req, res) => {
       accountType,
     });
     await user.save();
-    //send the success msg
 
-    // Registraation done, create JWT token
+    // Registration done, create JWT token
     const accessToken = jwt.sign(
       { name: user.username, userId: user._id },
       process.env.ACCESS_TOKEN_SECRET
     );
-    console.log(accessToken);
+
     res.status(201).json({
       success: true,
       message: "Registration is successful",

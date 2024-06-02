@@ -1,10 +1,10 @@
 const express = require("express");
-const connectDB = require("./connection/DbConnection");
+const connectDB = require("./conf/DbConnection");
 const app = express();
 const cors = require("cors");
-const registerUser = require("./Login-registraion/Registration");
+const registerUser = require("./api/login");
 const Addproduct = require("./product Api/addproduct");
-const login = require("./Login-registraion/login");
+const login = require("./api/Registration");
 const multer = require("multer");
 const upload = multer({ dest: "images/" });
 const Getproduct = require("./product Api/getproduct");
