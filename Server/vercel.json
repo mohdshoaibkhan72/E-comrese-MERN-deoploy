@@ -1,14 +1,19 @@
 {
+  "version": 2,
   "builds": [
-    {
-      "src": "server.js",
-      "use": "@vercel/node"
-    }
+    { "src": "server.js", "use": "@vercel/node" },
+    { "src": "api/**/*.js", "use": "@vercel/node" },
+    { "src": "product Api/**/*.js", "use": "@vercel/node" },
+    { "src": "Card/**/*.js", "use": "@vercel/node" },
+    { "src": "Orders/**/*.js", "use": "@vercel/node" },
+    { "src": "Pasword/**/*.js", "use": "@vercel/node" },
+    { "src": "middlewares/**/*.js", "use": "@vercel/node" }
   ],
   "routes": [
-    {
-      "src": "/.*",
-      "dest": "server.js"
-    }
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/product Api/(.*)", "dest": "/product Api/$1" },
+    { "src": "/Card/(.*)", "dest": "/Card/$1" },
+    { "src": "/Orders/(.*)", "dest": "/Orders/$1" },
+    { "src": "/Pasword/(.*)", "dest": "/Pasword/$1" }
   ]
 }
